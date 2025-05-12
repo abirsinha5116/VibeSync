@@ -33,9 +33,9 @@ Library
 ## Support
 
 If you like my work, feel free to:
- - ⭐ this Repository. And we will live happily ever after xD.
+ - ⭐ this Repository.
  - Join me on Social: 
- - [<img align="left" alt="BasimAhmedKhan | LinkedIn" width="22px" src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/48/000000/external-linkedin-in-logo-used-for-professional-networking-logo-shadow-tal-revivo.png" />][linkedin]
+ - [<img align="left" alt="abirsinha5116 | LinkedIn" width="22px" src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/48/000000/external-linkedin-in-logo-used-for-professional-networking-logo-shadow-tal-revivo.png" />][linkedin]
 
 Thanks a Bunch for Stopping By! <3
 
