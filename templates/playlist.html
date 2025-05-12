@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VibeSync: Mood Playlists</title>
+  <link href="/mnt/personal/College/Major Project/Spotify-Clone-main/static/css/Navbar.css" rel="stylesheet" />
+  <link href="/mnt/personal/College/Major Project/Spotify-Clone-main/static/css/Playlist.css" rel="stylesheet" />
+  <link href="/mnt/personal/College/Major Project/Spotify-Clone-main/static/css/Home.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/Playlist.css') }}">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body onload="loadPlaylistFromServer(initialMood, songs, autoplay)">
+  <nav class="navbar">
+    <ul class="navbar-nav">
+      <li class="logo">
+        <a class="nav-link" href="/mnt/personal/College/Major Project/Spotify-Clone-main/templates/index.html">
+          <img src="{{ url_for('static', filename='images/images.jpeg') }}" alt="VibeSync logo" />
+          <span class="link-text">VibeSync</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/mnt/personal/College/Major Project/Spotify-Clone-main/templates/index.html">
+          <img src="{{ url_for('static', filename='icons/home.svg') }}" alt="Home" />
+          <span class="link-text">Home</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/mnt/personal/College/Major Project/Spotify-Clone-main/templates/About.html">
+          <img src="{{ url_for('static', filename='icons/about.svg') }}" alt="About us" />
+          <span class="link-text">About us</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/mnt/personal/College/Major Project/Spotify-Clone-main/templates/Library.html">
+          <img src="{{ url_for('static', filename='icons/library.svg') }}" alt="Library" />
+          <span class="link-text">Library</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/mnt/personal/College/Major Project/Spotify-Clone-main/templates/Playlist.html">
+          <img src="{{ url_for('static', filename='icons/like.svg') }}" alt="Playlists" />
+          <span class="link-text">Playlists</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h1>Select Your Mood</h1>
+    <div class="mood-grid">
+      <button class="mood-btn angry" onclick="navigate('angry')">
+        <i class="material-icons">mood_bad</i> Angry
+      </button>
+      <button class="mood-btn sad" onclick="navigate('sad')">
+        <i class="material-icons">sentiment_dissatisfied</i> Sad
+      </button>
+      <button class="mood-btn happy" onclick="navigate('happy')">
+        <i class="material-icons">sentiment_very_satisfied</i> happy
+      </button>
+      <button class="mood-btn disgust" onclick="navigate('disgust')">
+        <i class="material-icons">sick</i> disgust
+      </button>
+      <button class="mood-btn fear" onclick="navigate('fear')">
+        <i class="material-icons">visibility_off</i> fear
+      </button>
+      <button class="mood-btn neutral" onclick="navigate('neutral')">
+        <i class="material-icons">sentiment_neutral</i> neutral
+      </button>
+      <button class="mood-btn surprise" onclick="navigate('surprise')">
+        <i class="material-icons">surprise</i> surprise
+      </button>
+    </div>
+
+    <div class="detect-emotion-container">
+      <button id="detect-emotion-btn">🎤 Detect Emotion</button>
+      <p id="loading-text" style="display:none;">Detecting emotion... Please wait.</p>
+    </div>
+
+    <div id="playlist-container"></div>
+  </div>
+
+  <!-- Data from Flask -->
+  <script>
+    const initialMood = "{{ mood | default('') }}";
+    const songs = {{ songs | default([]) | tojson }};
+    const autoplay = {{ autoplay | default(None) | tojson }};
+  </script>
+  <script src="{{ url_for('static', filename='js/Playlist.js') }}"></script>
+</body>
+</html>

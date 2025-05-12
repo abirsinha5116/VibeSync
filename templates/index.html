@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeSync: Feel, Gesture, Hum – Your Music, Your Way!</title>
+
+    <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/navbar.css') }}" media="screen and (min-width: 1100px)" rel="stylesheet" />
+    <link rel="stylesheet" media="screen and (max-width: 1100px)" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Additional styling for the welcome message */
+        .welcome-message {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: #ececec;
+            font-size: 1.2em;
+            font-weight: bold;
+            z-index: 1000;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <ul class="navbar-nav">
+            <li class="logo">
+                <a class="nav-link" href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='resources/images.jpeg') }}" alt="VibeSync Logo"/>
+                    <span class="link-text">VibeSync</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='icons/home.svg') }}" alt="Home" />
+                    <span class="link-text">Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('about') }}">
+                    <img src="{{ url_for('static', filename='icons/about.svg') }}" alt="About us" />
+                    <span class="link-text">About us</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('library') }}">
+                    <img src="{{ url_for('static', filename='icons/library.svg') }}" alt="Library" />
+                    <span class="link-text">Library</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('playlist') }}">
+                    <img src="{{ url_for('static', filename='icons/like.svg') }}" alt="Playlist" />
+                    <span class="link-text">Playlist</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="welcome-message" id="welcomeMessage"></div>
+
+    <main>
+        <h1 class="margin">Your Music, Your Way!</h1>
+        <div class="container margin">
+            <div class="songlist">
+                {% for song in songs %}
+                <div class="songitem">
+                    <img src="{{ url_for('static', filename=song.cover_url) }}" alt="{{ song.name }}" />
+                    <span class="songName">{{ song.name }}</span>
+                    <audio id="audio-{{ loop.index0 }}" src="{{ url_for('static', filename=song.file_url) }}"></audio>
+                    <span class="songlistplay">
+                        <i id="play-{{ loop.index0 }}" class="far songItemPlay fa-play-circle" onclick="playSong({{ loop.index0 }})"></i>
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

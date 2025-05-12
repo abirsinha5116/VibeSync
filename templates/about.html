@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeSync: Feel, Gesture, Hum – Your Music, Your Way!</title>
+    <link href="{{ url_for('static', filename='css/Navbar.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/About.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/Home.css') }}" rel="stylesheet" />
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="navbar-nav">
+            <li class="logo">
+                <a class="nav-link" href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='Resources/images.jpeg') }}" />
+                    <span class="link-text">VibeSync</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='icons/home.svg') }}" alt="Home" />
+                    <span class="link-text">Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('about') }}">
+                    <img src="{{ url_for('static', filename='icons/about.svg') }}" alt="About us" />
+                    <span class="link-text">About us</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('library') }}">
+                    <img src="{{ url_for('static', filename='icons/library.svg') }}" alt="Library" />
+                    <span class="link-text">Library</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('playlist') }}">
+                    <img src="{{ url_for('static', filename='icons/like.svg') }}" alt="Playlist" />
+                    <span class="link-text">Playlist</span>
+                </a>
+            </li>            
+        </ul>
+    </nav>
+    <main>
+        <div class="about-container">
+            <div class="about-head">
+                <h1>ABOUT VibeSync</h1>
+                <p>With VibeSync, discover a music streaming experience that truly adapts to your lifestyle. Whether you’re commuting, working out, hosting a gathering, or winding down, our app intuitively curates the perfect soundtrack for every moment...</p>
+                <img src="{{ url_for('static', filename='Resources/Spotify - Music On The Go.png') }}" />
+                <h1>A Little About Us!</h1>  
+            </div>
+            <div class="about-body">
+                <img src="{{ url_for('static', filename='Resources/image_out_2.jpg') }}" style="margin-right: 10px;" />
+                <img src="{{ url_for('static', filename='Resources/image_out_2.jpg') }}" style="margin-right: 10px;" />
+                <img src="{{ url_for('static', filename='Resources/image_out_2.jpg') }}" />
+                
+                <div class="about-me">
+                    <p>Hello 👋</p>
+                    <p>We are Developers!!</p>
+                    <p>- 🔭 We're Currently Working on Gesture controlled music control.</p>
+                    <p>- 🌱 We're Currently Learning Web Development</p>
+                    <p>- 👯 We're looking to Collaborate with Others.</p>
+                    <p>- 🥅 2025 Goals: Contribute more to Open Source projects</p>
+                </div>
+            </div>
+
+            <h1>Follow us on!</h1>
+            <div class="contact">
+                <div class="social">
+                    <a href="https://www.instagram.com/quantumleap666/"><ion-icon name="logo-instagram" style="color:#E1306C"></ion-icon></a>
+                    <a href="https://github.com/AbirSinha8294"><ion-icon name="logo-github" style="color:#000000"></ion-icon></a>
+                    <a href="mailto:abirsinha8294@gmail.com"><ion-icon name="mail-outline" style="color:#eb4f0c"></ion-icon></a>
+                    <a href="https://www.linkedin.com/in/abir-sinha-57b654204/"><ion-icon name="logo-linkedin" style="color:#0072b1"></ion-icon></a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

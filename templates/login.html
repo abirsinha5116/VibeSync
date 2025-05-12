@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VibeSync: Feel, Gesture, Hum – Your Music, Your Way.</title>
+  <link href="/mnt/Personal/College/Major Project/Spotify-Clone-main/static/css/Login.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="main">
+    <label class="brand">
+      <img src="/mnt/Personal/College/Major Project/Spotify-Clone-main/Resources/images.jpeg" />VibeSync
+    </label>
+    <input type="checkbox" id="chk" aria-hidden="true"/>
+    <div class="singup">
+      <form id="signupForm">
+        <label for="chk" aria-hidden="true">Sign up</label>
+        <input type="text" name="txt" placeholder="User name" required />
+        <input type="email" name="email" placeholder="Email" required/>
+        <input type="password" name="pswd" placeholder="Password" required/>
+        <button class="button" type="submit">Sign up</button>
+      </form>
+    </div>
+
+    <div class="login">
+      <form id="loginForm">
+        <label for="chk" aria-hidden="true">Log in</label>
+        <input type="email" name="email" placeholder="Email" required/>
+        <input type="password" name="pswd" placeholder="Password" required/>
+        <button class="button" type="submit">Log in</button>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Include the new login.js file -->
+  <script src="/mnt/Personal/College/Major Project/Spotify-Clone-main/static/js/login.js"></script>
+</body>
+</html>
