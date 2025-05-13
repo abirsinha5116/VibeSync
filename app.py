@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, url_for, request, redirect
 import os
-import sys
+import random
+import subprocess
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
 # Home page
@@ -33,54 +34,38 @@ def library():
     return render_template('library.html')
 
 # Playlist page
-@app.route('/playlist', methods=['GET', 'POST'])
-def playlist():
-    return render_template('playlist.html')  # Mood handled via JS API
-
-@app.route('/api/mood-songs', methods=['POST'])
-def mood_songs():
-    mood = request.json.get('mood', '').lower()
-    folder = os.path.join(app.static_folder, 'music', mood)
-
-    if not os.path.exists(folder):
-        return jsonify({'mood': mood, 'songs': [], 'autoplay': None}), 404
-
-    files = [f for f in os.listdir(folder) if f.endswith('.mp3')]
+def get_songs_for_mood(mood):
+    music_dir = os.path.join(app.static_folder, 'music', mood)
+    try:
+        files = [f for f in os.listdir(music_dir) if f.lower().endswith('.mp3')]
+    except FileNotFoundError:
+        files = []
     songs = [
         {
-            'title': os.path.splitext(f)[0].replace('_', ' ').title(),
-            'file': f'/static/music/{mood}/{f}'
-        } for f in files
+            'title': os.path.splitext(fname)[0].replace('_', ' ').title(),
+            'file': url_for('static', filename=f'music/{mood}/{fname}')
+        }
+        for fname in files
     ]
-    return jsonify({'mood': mood, 'songs': songs, 'autoplay': songs[0]['file'] if songs else None})
+    return songs
 
-@app.route('/detect-emotion', methods=['POST'])
-def detect_emotion():
-    emotion = detect()  # Stub: Replace with actual detection
-    return redirect(url_for('playlist', mood=emotion))
+@app.route('/playlist', methods=['GET', 'POST'])
+def playlist():
+    if request.method == 'POST':
+        mood = request.form.get('mood')
+        songs = get_songs_for_mood(mood)
+        autoplay_url = random.choice(songs)['file'] if songs else None
+        return render_template('playlist.html', mood=mood, songs=songs, autoplay=autoplay_url)
+    return render_template('playlist.html', mood='', songs=[], autoplay=None)
 
-def detect():
-    # Dummy detector for testing
-    return 'angry'
-
-# API endpoint for client-side JS
-@app.route('/api/songs')
-def api_songs():
-    songs = []
-    song_folder  = os.path.join(app.static_folder, 'songs')
-    cover_folder = os.path.join(app.static_folder, 'covers')
-
-    for filename in os.listdir(song_folder):
-        if not filename.lower().endswith('.mp3'):
-            continue
-        base = os.path.splitext(filename)[0]
-        songs.append({
-            'name':      base.replace('_', ' ').title(),
-            'file_url':  f'songs/{filename}',
-            'cover_url': f'covers/{base}.jpg'
-        })
-
-    return jsonify(songs)
+# @app.route('/detect-emotion', methods=['POST'])
+# def detect_emotion():
+#     result = subprocess.run(['python', 'emotion_detector.py'], capture_output=True, text=True)
+#     print("RAW OUTPUT:", result.stdout)  # <- Debug line
+#     mood = result.stdout.strip().split('\n')[-1].lower()
+#     songs = get_songs_for_mood(mood)
+#     autoplay_url = random.choice(songs)['file'] if songs else None
+#     return jsonify({'mood': mood, 'songs': songs, 'autoplay': autoplay_url})
 
 if __name__ == '__main__':
     app.run(debug=True)
