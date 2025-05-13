@@ -70,17 +70,50 @@ body::-webkit-scrollbar-thumb {
 }
 
 .bottom {
-    height: 12%;
-    width: 90%;
     position: fixed;
     bottom: 0;
-    background-color: #23232e;
-    border-radius: 0.3rem;
+    width: 100%;
+    background: #181818;
+    padding: 10px 0;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-  }
+    align-items: center;
+    z-index: 999;
+}
+
+.bottom input[type="range"] {
+    width: 80%;
+    margin: 0 10px;
+}
+
+.controls {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #fff;
+}
+
+.volume-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+
+#volumeBar {
+    width: 100px;
+}
+
+#masterSongName {
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+#gif {
+    margin-left: 0;
+    transition: opacity 0.3s ease;
+}
 
 #ProgressBar {
     width: 80%;

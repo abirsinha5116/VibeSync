@@ -5,46 +5,45 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VibeSync: Mood Playlists</title>
-  <link href="/mnt/personal/College/Major Project/Spotify-Clone-main/static/css/Navbar.css" rel="stylesheet" />
-  <link href="/mnt/personal/College/Major Project/Spotify-Clone-main/static/css/Playlist.css" rel="stylesheet" />
-  <link href="/mnt/personal/College/Major Project/Spotify-Clone-main/static/css/Home.css" rel="stylesheet" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/Playlist.css') }}">
+  <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css/navbar.css') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/playlist.css') }}">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<body onload="loadPlaylistFromServer(initialMood, songs, autoplay)">
+<body onload="if(initialMood) loadPlaylistFromServer(initialMood, songs, autoplay)">
   <nav class="navbar">
-    <ul class="navbar-nav">
-      <li class="logo">
-        <a class="nav-link" href="/mnt/personal/College/Major Project/Spotify-Clone-main/templates/index.html">
-          <img src="{{ url_for('static', filename='images/images.jpeg') }}" alt="VibeSync logo" />
-          <span class="link-text">VibeSync</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/mnt/personal/College/Major Project/Spotify-Clone-main/templates/index.html">
-          <img src="{{ url_for('static', filename='icons/home.svg') }}" alt="Home" />
-          <span class="link-text">Home</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/mnt/personal/College/Major Project/Spotify-Clone-main/templates/About.html">
-          <img src="{{ url_for('static', filename='icons/about.svg') }}" alt="About us" />
-          <span class="link-text">About us</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/mnt/personal/College/Major Project/Spotify-Clone-main/templates/Library.html">
-          <img src="{{ url_for('static', filename='icons/library.svg') }}" alt="Library" />
-          <span class="link-text">Library</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link active" href="/mnt/personal/College/Major Project/Spotify-Clone-main/templates/Playlist.html">
-          <img src="{{ url_for('static', filename='icons/like.svg') }}" alt="Playlists" />
-          <span class="link-text">Playlists</span>
-        </a>
-      </li>
-    </ul>
+      <ul class="navbar-nav">
+          <li class="logo">
+              <a class="nav-link" href="{{ url_for('index') }}">
+                  <img src="{{ url_for('static', filename='resources/images.jpeg') }}" alt="VibeSync Logo"/>
+                  <span class="link-text">VibeSync</span>
+              </a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('index') }}">
+                  <img src="{{ url_for('static', filename='icons/home.svg') }}" alt="Home" />
+                  <span class="link-text">Home</span>
+              </a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('about') }}">
+                  <img src="{{ url_for('static', filename='icons/about.svg') }}" alt="About us" />
+                  <span class="link-text">About us</span>
+              </a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('library') }}">
+                  <img src="{{ url_for('static', filename='icons/library.svg') }}" alt="Library" />
+                  <span class="link-text">Library</span>
+              </a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('playlist') }}">
+                  <img src="{{ url_for('static', filename='icons/like.svg') }}" alt="Playlist" />
+                  <span class="link-text">Playlist</span>
+              </a>
+          </li>
+      </ul>
   </nav>
 
   <div class="container">
@@ -87,6 +86,6 @@
     const songs = {{ songs | default([]) | tojson }};
     const autoplay = {{ autoplay | default(None) | tojson }};
   </script>
-  <script src="{{ url_for('static', filename='js/Playlist.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/playlist.js') }}"></script>
 </body>
 </html>

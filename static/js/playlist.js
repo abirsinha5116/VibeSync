@@ -1,7 +1,7 @@
 function navigate(mood) {
   const form = document.createElement('form');
   form.method = 'POST';
-  form.action = 'playlist.html';
+  form.action = '/playlist';
 
   const input = document.createElement('input');
   input.type = 'hidden';

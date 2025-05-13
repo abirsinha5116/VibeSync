@@ -72,7 +72,6 @@
                 <div class="songitem">
                     <img src="{{ url_for('static', filename=song.cover_url) }}" alt="{{ song.name }}" />
                     <span class="songName">{{ song.name }}</span>
-                    <audio id="audio-{{ loop.index0 }}" src="{{ url_for('static', filename=song.file_url) }}"></audio>
                     <span class="songlistplay">
                         <i id="play-{{ loop.index0 }}" class="far songItemPlay fa-play-circle" onclick="playSong({{ loop.index0 }})"></i>
                     </span>
@@ -81,6 +80,22 @@
             </div>
         </div>
     </main>
+    <div class="bottom">
+        <input type="range" id="ProgressBar" value="0" min="0" max="100">
+        <div class="controls">
+            <img src="{{ url_for('static', filename='resources/playing.gif') }}" width="75" height="35" id="gif" style="opacity: 0;">
+            <span id="masterSongName">Select a song</span>
+            
+            <i class="fas fa-2x fa-step-backward" id="previous"></i>
+            <i class="far fa-2x fa-play-circle" id="masterPlay"></i>
+            <i class="fas fa-2x fa-step-forward" id="next"></i>
+            <i class="fas fa-volume-up" id="volumeIcon"></i>
+            <input type="range" id="volumeBar" min="0" max="1" step="0.01" value="1">
+        </div>
+
+    </div>
+    <script src="https://kit.fontawesome.com/d5b2540b36.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 
 </html>
