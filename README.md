@@ -7,7 +7,7 @@ This is a music player app which is built on HTML, CSS, JS and uses Computer vis
 
 ## Working Application
 
-Check Out the Live Version -> [Spotify-Clone](https://github.com/abirsinha5116/Vibesync)
+Check Out the Live Version -> [VibeSync](https://github.com/abirsinha5116/Vibesync)
 
 ![Demo](https://github.com/BasimAhmedKhan/Spotify-Clone/blob/main/Readme%20Resources/Spotify-Clone.gif)
 
