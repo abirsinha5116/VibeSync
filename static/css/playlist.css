@@ -314,6 +314,53 @@ h1 {
   color: #333;
 }
 
+.playlist-section {
+  position: absolute;
+  top: 170px; /* Adjust based on your layout */
+  right: 20px; /* Distance from the right edge */
+  width: 300px; /* Set desired width */
+  background-color: rgba(255, 255, 255, 0.85); /* Optional: slight background */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.song-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.song-item {
+  margin-bottom: 20px;
+}
+
+.song-card {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.song-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.audio-player {
+  width: 100%;
+}
+
+.no-songs-message {
+  text-align: center;
+  color: #666;
+}
+
+.playlist-section h2 {
+  margin-top: -300px; /* Adjust this value as needed */
+}
+
+
 
 /* Mood colors */
 .angry { background-color: #e74c3c; }

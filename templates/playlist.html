@@ -104,15 +104,14 @@
     </div>
 
     <!-- Mood Playlist Display Section -->
-    <div id="playlist-container">
+    <div id="playlist-container" class="playlist-section">
       {% if songs %}
-        <h2>Playlist for {{ mood | title }} Mood</h2>
-        <ul>
+        <ul class="song-list">
           {% for song in songs %}
-            <li>
-              <div class="song">
-                <p>{{ song.title }}</p>
-                <audio controls>
+            <li class="song-item">
+              <div class="song-card">
+                <p class="song-title">{{ song.title }}</p>
+                <audio controls class="audio-player">
                   <source src="{{ song.file }}" type="audio/mpeg">
                   Your browser does not support the audio element.
                 </audio>
@@ -121,9 +120,10 @@
           {% endfor %}
         </ul>
       {% else %}
-        <p>No songs available for this mood.</p>
+        <p class="no-songs-message">No songs available for this mood.</p>
       {% endif %}
     </div>
+
     <!-- End of Playlist Display -->
     
     <div class="detect-emotion-container">

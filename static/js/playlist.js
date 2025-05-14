@@ -24,9 +24,7 @@ function loadPlaylistFromServer(mood, songs, autoplayUrl) {
     player.innerHTML = `
       <p>${song.title}</p>
       <audio id="player${index}" src="${song.file}" controls></audio>
-      <button onclick="togglePlay(${index})">
-        <i class="material-icons">play_arrow</i>
-      </button>
+  
     `;
     container.appendChild(player);
   });
@@ -46,17 +44,17 @@ function loadPlaylistFromServer(mood, songs, autoplayUrl) {
   }
 }
 
-function togglePlay(index) {
-  const audio = document.getElementById(`player${index}`);
-  const btnIcon = audio.nextElementSibling.querySelector('i');
-  if (audio.paused) {
-    audio.play();
-    btnIcon.textContent = 'pause';
-  } else {
-    audio.pause();
-    btnIcon.textContent = 'play_arrow';
-  }
-}
+// function togglePlay(index) {
+//   const audio = document.getElementById(`player${index}`);
+//   const btnIcon = audio.nextElementSibling.querySelector('i');
+//   if (audio.paused) {
+//     audio.play();
+//     btnIcon.textContent = 'pause';
+//   } else {
+//     audio.pause();
+//     btnIcon.textContent = 'play_arrow';
+//   }
+// }
 
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('detect-emotion-btn');
