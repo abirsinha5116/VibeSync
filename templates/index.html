@@ -84,7 +84,7 @@
         <input type="range" id="ProgressBar" value="0" min="0" max="100">
         <div class="controls">
             <img src="{{ url_for('static', filename='resources/playing.gif') }}" width="75" height="35" id="gif" style="opacity: 0;">
-            <span id="masterSongName">Select a song</span>
+            <span id="masterSongName">Let me Love You</span>
             
             <i class="fas fa-2x fa-step-backward" id="previous"></i>
             <i class="far fa-2x fa-play-circle" id="masterPlay"></i>
@@ -94,6 +94,17 @@
         </div>
 
     </div>
+    <script>
+        const songs = [
+            {% for song in songs %}
+            {
+                name: "{{ song.name }}",
+                file_url: "{{ song.file_url }}",
+                cover_path: "{{ song.cover_url }}"
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ];
+    </script>    
     <script src="https://kit.fontawesome.com/d5b2540b36.js" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>

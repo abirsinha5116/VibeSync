@@ -139,3 +139,47 @@ body::-webkit-scrollbar-thumb {
     opacity: 0;
     transition: 1s ease-in;
 }
+
+/* Play buttons inside song list */
+.songItemPlay {
+    color: #ffffff;
+    transition: transform 0.2s ease, color 0.3s ease;
+    cursor: pointer;
+}
+
+.songItemPlay:hover {
+    color: #1DB954; /* Spotify green for hover effect */
+    transform: scale(1.2);
+}
+
+.songItemPlay:active {
+    transform: scale(0.95);
+    color: #17a34a;
+}
+
+/* Controls at the bottom */
+.controls i {
+    color: #ffffff;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.3s ease;
+}
+
+.controls i:hover {
+    color: #1DB954;
+    transform: scale(1.15);
+}
+
+.controls i:active {
+    transform: scale(0.95);
+    color: #17a34a;
+}
+
+/* Volume icon */
+#volumeIcon {
+    transition: color 0.3s ease;
+}
+
+#volumeIcon:hover {
+    color: #1DB954;
+}

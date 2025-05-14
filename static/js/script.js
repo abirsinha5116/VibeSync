@@ -1,41 +1,27 @@
-﻿console.log("Welcome to Vibesync");
+﻿let songIndex = 0;
+let audioElement = new Audio(`/static/${songs[songIndex].file_url}`);
 
-let songs = [], songIndex = 0;
-const audioElement = new Audio();
-let masterPlay, ProgressBar, gif, masterSongName, songItems, nextBtn, prevBtn;
+const masterPlay = document.getElementById('masterPlay');
+const ProgressBar = document.getElementById('ProgressBar');
+const volumeBar = document.getElementById('volumeBar');
+const volumeIcon = document.getElementById('volumeIcon');
+const masterSongName = document.getElementById('masterSongName');
+const songItems = document.querySelectorAll('.songItem');
+const gif = document.getElementById('gif');
+const nextBtn = document.getElementById('next');
+const prevBtn = document.getElementById('previous');
 
-fetch('/api/songs')
-  .then(r => r.json())
-  .then(data => {
-    songs = data;
-    cacheDomElements();
-    initializePlayer();
-    attachEventListeners();
-  })
-  .catch(console.error);
+// Initialize song list display
+songItems.forEach((element, i) => {
+  const songImage = element.querySelector('.songImage');
+  const songName = element.querySelector('.songName');
+  songImage.src = `/static/${songs[i].cover_path}`;
+  songName.innerText = songs[i].name;
+});
 
-function cacheDomElements() {
-  masterPlay     = document.getElementById('masterPlay');
-  ProgressBar    = document.getElementById('ProgressBar');
-  gif            = document.getElementById('gif');
-  masterSongName = document.getElementById('masterSongName');
-  nextBtn        = document.getElementById('next');
-  prevBtn        = document.getElementById('previous');
-  songItems      = Array.from(document.getElementsByClassName('songitem'));
-  volumeBar = document.getElementById('volumeBar');
-  volumeIcon = document.getElementById('volumeIcon');
-}
-
-function initializePlayer() {
-  if (!songs.length) return;
-  audioElement.src           = `/static/${songs[0].file_url}`;
-  masterSongName.innerText   = songs[0].name;
-  updateMasterIcon();
-}
-
+// Event Listeners
 function attachEventListeners() {
   masterPlay.addEventListener('click', togglePlayPause);
-
 
   volumeBar.addEventListener('input', () => {
     audioElement.volume = volumeBar.value;
@@ -43,16 +29,10 @@ function attachEventListeners() {
   });
 
   volumeIcon.addEventListener('click', () => {
-    if (audioElement.muted) {
-      audioElement.muted = false;
-      volumeBar.value = audioElement.volume;
-    } else {
-      audioElement.muted = true;
-      volumeBar.value = 0;
-    }
+    audioElement.muted = !audioElement.muted;
+    volumeBar.value = audioElement.muted ? 0 : audioElement.volume;
     updateVolumeIcon();
   });
-
 
   audioElement.addEventListener('timeupdate', () => {
     ProgressBar.value = audioElement.duration
@@ -64,58 +44,91 @@ function attachEventListeners() {
     audioElement.currentTime = (ProgressBar.value / 100) * audioElement.duration;
   });
 
-  audioElement.addEventListener('ended', () =>
-    playSong((songIndex + 1) % songs.length)
-  );
+  audioElement.addEventListener('ended', () => {
+    playSong((songIndex + 1) % songs.length);
+  });
 
   nextBtn.addEventListener('click', () =>
     playSong((songIndex + 1) % songs.length)
   );
+
   prevBtn.addEventListener('click', () =>
     playSong((songIndex - 1 + songs.length) % songs.length)
   );
+
+  // Individual song play buttons
+  songItems.forEach((_, i) => {
+    const playBtn = document.getElementById(`play-${i}`);
+    if (playBtn) {
+      playBtn.addEventListener('click', () => {
+        if (songIndex === i && !audioElement.paused) {
+          audioElement.pause();
+          updateMasterIcon();
+          resetAllPlayButtons();
+        } else {
+          playSong(i);
+        }
+      });
+    }
+  });
 }
 
 function togglePlayPause() {
-  audioElement.paused ? audioElement.play() : audioElement.pause();
-  updateMasterIcon();
+  if (audioElement.paused || audioElement.currentTime <= 0) {
+    audioElement.play();
+    updateMasterIcon();
+
+    const playBtn = document.getElementById(`play-${songIndex}`);
+    if (playBtn) {
+      playBtn.classList.replace('fa-play-circle', 'fa-pause-circle');
+    }
+  } else {
+    audioElement.pause();
+    updateMasterIcon();
+    resetAllPlayButtons();
+  }
 }
 
 function updateMasterIcon() {
-  if (audioElement.paused) {
-    masterPlay.classList.replace('fa-pause-circle','fa-play-circle');
-    gif.style.opacity = 0;
-  } else {
-    masterPlay.classList.replace('fa-play-circle','fa-pause-circle');
-    gif.style.opacity = 1;
-  }
+  masterPlay.classList.toggle('fa-play-circle', audioElement.paused);
+  masterPlay.classList.toggle('fa-pause-circle', !audioElement.paused);
+  gif.style.opacity = audioElement.paused ? 0 : 1;
 }
-
-function updateVolumeIcon() {
-  if (audioElement.muted || audioElement.volume === 0) {
-    volumeIcon.classList.replace('fa-volume-up', 'fa-volume-mute');
-  } else {
-    volumeIcon.classList.replace('fa-volume-mute', 'fa-volume-up');
-  }
-}
-
 
 function resetAllPlayButtons() {
   songItems.forEach((_, i) => {
     const icon = document.getElementById(`play-${i}`);
-    if (icon) icon.classList.replace('fa-pause-circle','fa-play-circle');
+    if (icon) icon.classList.replace('fa-pause-circle', 'fa-play-circle');
   });
 }
 
+function updateVolumeIcon() {
+  const volume = audioElement.muted ? 0 : audioElement.volume;
+  volumeIcon.className = 'fas';
+  if (volume === 0) {
+    volumeIcon.classList.add('fa-volume-mute');
+  } else if (volume <= 0.5) {
+    volumeIcon.classList.add('fa-volume-down');
+  } else {
+    volumeIcon.classList.add('fa-volume-up');
+  }
+}
+
 function playSong(i) {
+  resetAllPlayButtons();
   songIndex = i;
-  audioElement.src         = `/static/${songs[i].file_url}`;
+  audioElement.src = `/static/${songs[i].file_url}`;
   masterSongName.innerText = songs[i].name;
   audioElement.currentTime = 0;
   audioElement.play();
 
-  resetAllPlayButtons();
-  const icon = document.getElementById(`play-${i}`);
-  if (icon) icon.classList.replace('fa-play-circle','fa-pause-circle');
   updateMasterIcon();
+
+  const playBtn = document.getElementById(`play-${i}`);
+  if (playBtn) {
+    playBtn.classList.replace('fa-play-circle', 'fa-pause-circle');
+  }
 }
+
+// Start everything
+attachEventListeners();
