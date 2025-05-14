@@ -16,7 +16,7 @@ function navigate(mood) {
 function loadPlaylistFromServer(mood, songs, autoplayUrl) {
   if (!mood || !Array.isArray(songs)) return;
   const container = document.getElementById('playlist-container');
-  container.innerHTML = `<h2>${mood.charAt(0).toUpperCase() + mood.slice(1)} Playlist</h2>`;
+  // container.innerHTML = `<h2>${mood.charAt(0).toUpperCase() + mood.slice(1)} Playlist</h2>`;
 
   songs.forEach((song, index) => {
     const player = document.createElement('div');
