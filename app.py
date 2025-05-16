@@ -58,14 +58,14 @@ def playlist():
         return render_template('playlist.html', mood=mood, songs=songs, autoplay=autoplay_url)
     return render_template('playlist.html', mood='', songs=[], autoplay=None)
 
-# @app.route('/detect-emotion', methods=['POST'])
-# def detect_emotion():
-#     result = subprocess.run(['python', 'emotion_detector.py'], capture_output=True, text=True)
-#     print("RAW OUTPUT:", result.stdout)  # <- Debug line
-#     mood = result.stdout.strip().split('\n')[-1].lower()
-#     songs = get_songs_for_mood(mood)
-#     autoplay_url = random.choice(songs)['file'] if songs else None
-#     return jsonify({'mood': mood, 'songs': songs, 'autoplay': autoplay_url})
+@app.route('/detect-emotion', methods=['POST'])
+def detect_emotion():
+    result = subprocess.run(['python', 'util/emotion_detector.py'], capture_output=True, text=True)
+    print("RAW OUTPUT:", result.stdout)  # <- Debug line
+    mood = result.stdout.strip().split('\n')[-1].lower()
+    songs = get_songs_for_mood(mood)
+    autoplay_url = random.choice(songs)['file'] if songs else None
+    return jsonify({'mood': mood, 'songs': songs, 'autoplay': autoplay_url})
 
 if __name__ == '__main__':
     app.run(debug=True)

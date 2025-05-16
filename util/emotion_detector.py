@@ -4,7 +4,7 @@ import cv2
 from ultralytics import YOLO
 
 # Load the trained YOLO model
-model = YOLO(r"C:\Users\Dell\Desktop\IC_Prod\VibeSync\util\best.pt")
+model = YOLO(r"C:\Users\Dell\Desktop\IC_Prod\VibeSync\models\best.pt")
 
 # Initialize webcam
 cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # 0 means the default camera
