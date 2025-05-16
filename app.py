@@ -1,8 +1,10 @@
 from flask import Flask, render_template, jsonify, url_for, request, redirect
+from flask_socketio import SocketIO, emit
 import os
 import random
 import subprocess
 app = Flask(__name__, static_folder='static', template_folder='templates')
+socketio = SocketIO(app)
 
 # Home page
 @app.route('/')
@@ -58,6 +60,11 @@ def playlist():
         return render_template('playlist.html', mood=mood, songs=songs, autoplay=autoplay_url)
     return render_template('playlist.html', mood='', songs=[], autoplay=None)
 
+@socketio.on('gesture')
+def handle_gesture(data):
+    print(f"Gesture received: {data['gesture']}")
+    emit('gesture', data, broadcast=True)
+
 # @app.route('/detect-emotion', methods=['POST'])
 # def detect_emotion():
 #     result = subprocess.run(['python', 'emotion_detector.py'], capture_output=True, text=True)
@@ -68,4 +75,4 @@ def playlist():
 #     return jsonify({'mood': mood, 'songs': songs, 'autoplay': autoplay_url})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app,debug=True)
