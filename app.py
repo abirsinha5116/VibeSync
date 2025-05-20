@@ -65,6 +65,29 @@ def handle_gesture(data):
     print(f"Gesture received: {data['gesture']}")
     emit('gesture', data, broadcast=True)
 
+import subprocess
+
+gesture_process = None
+gesture_running = False
+
+@app.route("/toggle-gesture")
+def toggle_gesture():
+    global gesture_process, gesture_running
+
+    if not gesture_running or gesture_process is None or gesture_process.poll() is not None:
+        # Start gesture detection
+        gesture_process = subprocess.Popen(["python", "NewGestures.py"])
+        gesture_running = True
+        return jsonify({"status": "started", "message": "Gesture detection started."})
+    else:
+        # Stop gesture detection
+        gesture_process.terminate()
+        gesture_process = None
+        gesture_running = False
+        return jsonify({"status": "stopped", "message": "Gesture detection stopped."})
+
+
+
 # @app.route('/detect-emotion', methods=['POST'])
 # def detect_emotion():
 #     result = subprocess.run(['python', 'emotion_detector.py'], capture_output=True, text=True)

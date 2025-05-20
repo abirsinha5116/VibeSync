@@ -144,13 +144,14 @@ cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
 last_gesture = None
-last_time = 0
+last_trigger_times = {}
+gesture_hold_start = {}
 last_gesture_time = 0
 cooldowns = {
     "PLAY":0,
     "PAUSE":0,
-    "NEXT TRACK":10,
-    "PREVIOUS TRACK":10,
+    "NEXT_TRACK":5,
+    "PREVIOUS_TRACK":5,
     "VOLUME_UP":0,
     "VOLUME_DOWN":0
 }
@@ -180,20 +181,39 @@ while cap.isOpened():
             current_time = time.time()
 
             if gesture:
-                # Skip if recently shown the same gesture to prevent flicker
-                if gesture == last_gesture and (current_time - last_gesture_time) < 0.5:
-                    continue
-                cv2.putText(frame, f'Gesture: {gesture}', (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                current_time = time.time()
                 gesture_counter[gesture] = gesture_counter.get(gesture, 0) + 1
+
                 if gesture_counter[gesture] >= gesture_threshold:
                     gesture_cooldown = cooldowns.get(gesture, 0)
-                    if current_time - last_time > gesture_cooldown or gesture in ["VOLUME_UP", "VOLUME_DOWN"]:
-                            print(" Detected Gesture:", gesture)
-                            map_action(gesture)
-                            last_gesture = gesture
-                            last_time = current_time
-                            gesture_counter.clear()
-                            last_gesture_time = time.time()
+                    last_trigger = last_trigger_times.get(gesture, 0)
+                    is_volume = gesture in ["VOLUME_UP", "VOLUME_DOWN"]
+
+                    # Detect if gesture was re-shown (i.e., came back after being gone)
+                    is_new = (gesture != last_gesture)
+
+                    if is_new:
+                        print(" Detected Gesture:", gesture)
+                        map_action(gesture)
+                        last_trigger_times[gesture] = current_time
+                        gesture_counter.clear()
+                    elif not is_volume and (current_time - last_trigger > gesture_cooldown):
+                        print(" Detected Gesture:", gesture)
+                        map_action(gesture)
+                        last_trigger_times[gesture] = current_time
+                        gesture_counter.clear()
+                    elif is_volume:
+                        print(" Detected Gesture:", gesture)
+                        map_action(gesture)
+                        last_trigger_times[gesture] = current_time
+                        gesture_counter.clear()
+
+                    last_gesture = gesture
+                    last_gesture_time = current_time
+            else:
+                # No gesture in frame → reset state so gesture is treated fresh next time
+                gesture_counter.clear()
+                last_gesture = None
 
             if gesture:
                 cv2.putText(frame, f'Gesture: {gesture}', (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
