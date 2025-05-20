@@ -23,6 +23,43 @@
             font-weight: bold;
             z-index: 1000;
         }
+        
+        #gestureControlContainer {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 1000;
+            }
+
+            #gestureToggleBtn {
+            padding: 12px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            }
+
+            #gestureToggleBtn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+            }
+
+            #gestureToggleBtn.active {
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid lime;
+            box-shadow: 0 6px 25px lime;
+            }
+
     </style>
 </head>
 
@@ -107,6 +144,83 @@
     </script>    
     <script src="https://kit.fontawesome.com/d5b2540b36.js" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+
+        socket.on("gesture", (data) => {
+            const gesture = data.gesture;
+
+            switch (gesture) {
+                case "PLAY":
+                    if (audioElement.paused) {
+                        audioElement.play();
+                        updateMasterIcon();
+                    }
+                    break;
+
+                case "PAUSE":
+                    if (!audioElement.paused) {
+                        audioElement.pause();
+                        updateMasterIcon();
+                    }
+                    break;
+
+                case "NEXT_TRACK":
+                    document.getElementById("next").click();
+                    break;
+
+                case "PREVIOUS_TRACK":
+                    document.getElementById("previous").click();
+                    break;
+
+                case "VOLUME_UP":
+                    let upVol = Math.min(1, parseFloat(volumeBar.value) + 0.1);
+                    volumeBar.value = upVol;
+                    volumeBar.dispatchEvent(new Event('input'));
+                    break;
+
+                case "VOLUME_DOWN":
+                    let downVol = Math.max(0, parseFloat(volumeBar.value) - 0.1);
+                    volumeBar.value = downVol;
+                    volumeBar.dispatchEvent(new Event('input'));
+                    break;
+            }
+            });
+
+    </script>
+    <div id="gestureControlContainer" class="top-right-gesture-btn">
+        <button id="gestureToggleBtn">🖐 Start</button>
+    </div>
+
+    <!-- Gesture Toggle Script -->
+    <script>
+        const toggleBtn = document.getElementById("gestureToggleBtn");
+        let gestureActive = false;
+
+        toggleBtn.addEventListener("click", () => {
+            fetch("/toggle-gesture")
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "started") {
+                gestureActive = true;
+                toggleBtn.classList.add("active");
+                toggleBtn.innerText = "🖐 Stop";
+                } else {
+                gestureActive = false;
+                toggleBtn.classList.remove("active");
+                toggleBtn.innerText = "🖐 Start";
+                }
+            })
+            .catch(err => {
+                alert("Error toggling gesture control.");
+                console.error(err);
+            });
+        });
+    </script>
+
+
 </body>
 
 </html>
