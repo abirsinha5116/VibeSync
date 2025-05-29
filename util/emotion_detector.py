@@ -4,10 +4,10 @@ import cv2
 from ultralytics import YOLO
 
 # Load the trained YOLO model
-model = YOLO(r"C:\Users\Dell\Desktop\IC_Prod\VibeSync\models\best.pt")
+model = YOLO("/mnt/personal/College/Major Project/Final_Demo/VibeSync/models/best.pt")
 
 # Initialize webcam
-cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # 0 means the default camera
+cap = cv2.VideoCapture(0)  # 0 means the default camera
 
 if not cap.isOpened():
     print("Error: Could not open webcam.")
@@ -21,7 +21,7 @@ emotion_stats = {emotion: {"total": 0.0, "count": 0} for emotion in emotion_labe
 
 # Set a 3 minute (180 seconds) timer
 start_time = time.time()
-duration = 30  # seconds
+duration = 15  # seconds
 
 while True:
     success, img = cap.read()

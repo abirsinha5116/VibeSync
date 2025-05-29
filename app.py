@@ -1,8 +1,11 @@
 from flask import Flask, render_template, jsonify, url_for, request, redirect
+from flask_socketio import SocketIO, emit
+from humming_detection import record_chunk, recognize
 import os
 import random
 import subprocess
 app = Flask(__name__, static_folder='static', template_folder='templates')
+socketio = SocketIO(app)
 
 # Home page
 @app.route('/')
@@ -22,6 +25,22 @@ def index():
         })
 
     return render_template('index.html', songs=songs)
+
+@app.route('/detect_hum', methods=['POST'])
+def detect_hum():
+    filename = "static/temp_hum.wav"
+    try:
+        record_chunk(filename, 15, 44100)
+        result = recognize(filename)
+        os.remove(filename)
+        if result:
+            title, artist = result
+            return jsonify({'status': 'success', 'title': title, 'artist': artist})
+        else:
+            return jsonify({'status': 'fail', 'message': 'No match found'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
+
 
 # About page
 @app.route('/about')
@@ -66,6 +85,29 @@ def detect_emotion():
     songs = get_songs_for_mood(mood)
     autoplay_url = random.choice(songs)['file'] if songs else None
     return jsonify({'mood': mood, 'songs': songs, 'autoplay': autoplay_url})
+@socketio.on('gesture')
+def handle_gesture(data):
+    print(f"Gesture received: {data['gesture']}")
+    emit('gesture', data, broadcast=True)
+
+gesture_process = None
+gesture_running = False
+
+@app.route("/toggle-gesture")
+def toggle_gesture():
+    global gesture_process, gesture_running
+
+    if not gesture_running or gesture_process is None or gesture_process.poll() is not None:
+        # Start gesture detection
+        gesture_process = subprocess.Popen(["python", "NewGestures.py"])
+        gesture_running = True
+        return jsonify({"status": "started", "message": "Gesture detection started."})
+    else:
+        # Stop gesture detection
+        gesture_process.terminate()
+        gesture_process = None
+        gesture_running = False
+        return jsonify({"status": "stopped", "message": "Gesture detection stopped."})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app,debug=True)
